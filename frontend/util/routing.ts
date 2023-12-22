@@ -13,3 +13,15 @@ export function useRouteMetadata(): RouteMetadata | undefined {
   const match = matches[matches.length - 1];
   return match?.handle as RouteMetadata | undefined;
 }
+
+interface FsView  {
+  id: string,
+  clientSide: boolean,
+  route: string,
+  title: string,
+  metadata: any;
+}
+
+export function getFsViews(): FsView[] {
+  return (window as any).Vaadin.views || [];
+}

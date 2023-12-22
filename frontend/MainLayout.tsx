@@ -1,7 +1,7 @@
 import { AppLayout } from '@hilla/react-components/AppLayout.js';
 import { DrawerToggle } from '@hilla/react-components/DrawerToggle.js';
 import Placeholder from 'Frontend/components/placeholder/Placeholder.js';
-import { useRouteMetadata } from 'Frontend/util/routing.js';
+import { getFsViews, useRouteMetadata } from 'Frontend/util/routing.js';
 import { Suspense } from 'react';
 import { NavLink, Outlet } from 'react-router-dom';
 
@@ -17,12 +17,11 @@ export default function MainLayout() {
         <header className="flex flex-col gap-m">
           <h1 className="text-l m-0">My App</h1>
           <nav>
-            <NavLink className={navLinkClasses} to="/">
-              Hello World
-            </NavLink>
-            <NavLink className={navLinkClasses} to="/about">
-              About
-            </NavLink>
+            {
+              getFsViews().map((view) => {
+                return <NavLink key={view.id} className={navLinkClasses} to={view.route}>{view.title}</NavLink>
+              })
+            }
           </nav>
         </header>
       </div>

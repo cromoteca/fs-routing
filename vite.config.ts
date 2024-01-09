@@ -123,7 +123,7 @@ const viewWatcher: PluginOption = {
   name: "vite-plugin-view-watch",
   async buildStart() {
     for await (const file of walk(root + '/views/')) {
-      const relativeLocation = file.substring(viewsDir.length);
+      const relativeLocation = file.substring(viewsDir.length).replace(/\\/g, "/");
 
       const content = await fs.promises.readFile(file, {encoding: "utf-8"});
 

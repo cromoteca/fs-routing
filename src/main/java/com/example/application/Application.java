@@ -76,11 +76,21 @@ public class Application implements AppShellConfigurator {
                             title = id;
                         }
 
-                        String route = "/" + id.replaceAll("\\.[^.]*$", "");
+                        // Remove .tsx, .ts, .jsx or .js extensions
+                        String route = "/" + id.replaceAll("\\.[tj]sx?$", "");
                         if (route.endsWith("/index")) {
                             route = route.substring(0, route.length() - "/index".length());
                         }
 
+                        // /{...id} -> /* (discards the parameter name)
+                        route = route.replaceAll("/\\{...[^/}]+\\}", "/*");
+
+                        // /{{id}} -> /:id?
+                        route = route.replaceAll("/\\{\\{([^/}]+)\\}\\}", "/:$1?");
+
+                        // /{id} -> /:id
+                        route = route.replaceAll("/\\{([^/}]+)\\}", "/:$1");
+                        
                         availableViews.add(new AvailableView(id, route, true, title, metadata));
                     });
 

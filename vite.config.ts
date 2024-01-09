@@ -94,9 +94,7 @@ let outDir: string;
 let viewsDir: string;
 
 function writeFiles() {
-  const logError: fs.NoParamCallback = (err) => { if (err) console.log(err); };
-
-  console.log("Writing files", currentViews);
+  const logError: fs.NoParamCallback = (err) => { if (err) console.error(err); };
 
   const viewsJsonName = path.dirname(outDir) + '/views.json';
   fs.writeFile(viewsJsonName, JSON.stringify(currentViews), logError);
@@ -152,7 +150,6 @@ const viewWatcher: PluginOption = {
   },
 
   handleHotUpdate({file, read, server}) {    
-    console.log("Hot update", file);
     if (!file.startsWith(viewsDir)) {
       return;
     }

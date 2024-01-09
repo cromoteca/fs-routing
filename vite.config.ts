@@ -138,6 +138,19 @@ const viewWatcher: PluginOption = {
       writeFiles();
     }
   },
+  
+  configureServer(server) {
+    server.watcher.on('unlink', (file) => {
+      if (!file.startsWith(viewsDir)) {
+        return;
+      }
+      const relativeLocation = file.substring(viewsDir.length);
+      if (relativeLocation in currentViews) {
+        delete currentViews[relativeLocation];
+        writeFiles();
+      }
+    });
+  },
 
   configResolved(config) {
     root = config.root;
